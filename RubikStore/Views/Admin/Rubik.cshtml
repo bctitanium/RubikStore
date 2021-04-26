@@ -1,0 +1,130 @@
+﻿@*@model IEnumerable<RubikStore.Models.Rubik>*@
+
+@using RubikStore.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<Rubik>
+
+@{
+    ViewBag.Title = "Rubik";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Quản lý Rubik</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Ten)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Loai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().MoTa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Hang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Gia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().PicCover)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SoLgTon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NgayCapNhat)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ten)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Loai)
+        </td>
+        <td class="show-read-more">
+            @Html.DisplayFor(modelItem => item.MoTa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hang)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Gia)*@
+            @String.Format("{0:0,0}", item.Gia) VNĐ
+        </td>
+        <td>
+            <img src="@item.PicCover" width="200" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoLgTon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayCapNhat)
+        </td>
+        <td id="mau-nut">
+            <a href="@Url.Action("Edit", "RubikStore", new { id = item.Id})" class="btn btn-primary">Sửa</a> |
+            <a href="@Url.Action("Details", "RubikStore", new { id = item.Id})" class="btn btn-primary">Chi tiết</a> |
+            <a href="@Url.Action("Delete", "RubikStore", new { id = item.Id})" class="btn btn-primary">Xóa</a>
+        </td>
+    </tr>
+}
+
+</table>
+
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+<div class="MenuTrang">
+    @Html.PagedListPager(Model, page => Url.Action("Rubik", new { page = page }))
+</div>
+
+<style>
+    .MenuTrang li
+    {
+        display:inline;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var maxLength = 100;
+        $(".show-read-more").each(function () {
+            var myStr = $(this).text();
+            if ($.trim(myStr).length > maxLength) {
+                var newStr = myStr.substring(0, maxLength);
+                var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                $(this).empty().html(newStr);
+                $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+                $(this).append('<span class="more-text">' + removedStr + '</span>');
+            }
+        });
+        $(".read-more").click(function () {
+            $(this).siblings(".more-text").contents().unwrap();
+            $(this).remove();
+        });
+    });
+</script>
+<style>
+    .show-read-more .more-text {
+        display: none;
+    }
+</style>
+
+<style type="text/css">
+    #mau-nut a {
+        clear: both;
+        background-color: orange;
+        color: snow;
+    }
+
+        #mau-nut a:hover {
+            background-color: darkcyan;
+            color: snow;
+        }
+</style>

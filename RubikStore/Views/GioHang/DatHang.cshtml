@@ -1,0 +1,142 @@
+﻿@model IEnumerable<RubikStore.Models.Giohang>
+
+@{
+    ViewBag.Title = "DatHang";
+    Layout = "~/Views/Shared/_LayoutGioHang.cshtml";
+}
+
+<h2>Đặt hàng</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Ten)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Loai)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MoTa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PicCover)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iSoLg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dThanhtien)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ten)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Loai)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MoTa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hang)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.PicCover)*@
+            <img src="@item.PicCover" width="200" />
+        </td>
+
+        @using (Html.BeginForm("CapnhatGiohang", "Giohang", new { @id = item.Id }))
+        {
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Gia)*@
+                @String.Format("{0:0,0}", item.Gia) VNĐ
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.iSoLg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dThanhtien)
+            </td>
+        }
+
+    </tr>
+}
+
+    <tr style="font-weight:bold; text-align:right; color:red">
+        <td colspan="3">Số lượng Rubik: @ViewBag.Tongsoluong</td>
+        <td colspan="4">Số loại Rubik: @ViewBag.Tongsoluongsanpham</td>
+        <td colspan="5">Tổng tiền: @String.Format("{0:0,0}", @ViewBag.Tongtien) VNĐ</td>
+    </tr>
+
+    <tr style="font-weight:bold; text-align:right">
+        <td colspan="6">
+            @Html.ActionLink("Trờ về giỏ hàng", "Giohang", "GioHang")
+        </td>
+    </tr>
+
+</table>
+
+@using RubikStore.Models
+<h2 style="text-align:center">Thông tin đặt hàng</h2>
+@{ 
+    KhachHang kh = (KhachHang)Session["TaiKhoan"];
+}
+
+<table align="center">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <tr style="height:40px">
+            <td>Họ tên khách hàng: </td>
+            <td style="font-weight:bold">@kh.HoTen</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Email: </td>
+            <td style="font-weight:bold">@kh.Email</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Địa chỉ: </td>
+            <td style="font-weight:bold">@kh.DiaChiKH</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Điện thoại: </td>
+            <td style="font-weight:bold">@kh.DienThoaiKH</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Ngày đặt: </td>
+            <td style="font-weight:bold">@DateTime.Now.ToShortDateString()</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Ngày giao: </td>
+            <td style="font-weight:bold">
+                <input type="date" name="NgayGiao" />
+            </td>
+        </tr>
+
+        <tr style="height:40px">
+            <td></td>
+            <td style="font-weight:bold">
+                <input type="submit" value="Chốt đơn" class="btn btn-success" />
+            </td>
+        </tr>
+    }
+</table>
